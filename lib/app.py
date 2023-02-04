@@ -6,7 +6,7 @@ from playhouse.shortcuts import model_to_dict, dict_to_model
 # NOTE--START<<<BOILER PLATE FOR PEEWEE>>>
 # Create database - specify db_name, user, password, host, and port
 db = PostgresqlDatabase('people', user='postgres', password='12345',
-    host='localhost', port=5432)
+    host='localhost', port=12345)
 
 
 # Create base model to pull from database
@@ -19,7 +19,7 @@ db.connect()
 
 # NOTE--END <<<BOILER PLATE FOR PEEWEE>>>
 
-
+# Create Covid Cases Table
 class CovidCases(BaseModel):
     country_name = CharField()
     cases_total = IntegerField()
@@ -46,6 +46,48 @@ CovidCases(
     population=1406631776
     ).save()
 
+
+# Creating a flask server
+app = Flask(__name__)
+
+# Define routes
+@app.route('/covid-cases/', methods=['GET', 'POST'])
+@app.route('/covid-cases/<id>', methods=['GET', 'PUT', 'DELETE'])
+
+# Functions for CRUD at endpoints
+def endpoint(id=None):
+    # GET Request
+    if request.method == 'GET':
+        # Take model, translate into covid-cases and model it to a dictionary
+        if id:
+            return jsonify(model_to_dict(CovidCases.get(CovidCases.id == id)))
+        # Goes through person table and appends to list
+        else:
+            covid_list = []
+            for covid_cases in CovidCases.select():
+                covid_list.append(model_to_dict(covid_cases))
+            return jsonify(covid_list)
+    # PUT Request
+    if request.method =='PUT':
+        # Create variable to store json data
+        body = request.get_json()
+        # Use variable body to overwrite item at that id
+        CovidCases.update(body).where(CovidCases.id == id).execute()
+        return f"Covid Cases {str(id)} has been updated."
+    # POST Request
+    if request.method == 'POST':
+        # Creates New Item and assigns it to variable
+        new_country = dict_to_model(CovidCases, request.get_json())
+        # Saves New Item
+        new_country.save()
+        return jsonify({"success": True})
+    # DELETE Request
+    if request.method == 'DELETE':
+        # Delete where item is equal to id
+        CovidCases.delete().where(CovidCases.id == id).execute()
+        return f"Covid Cases entry at id {str(id)} has been deleted."
+
+app.run(debug=True, port=54321)
 
 
 
