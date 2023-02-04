@@ -23,9 +23,9 @@ class CovidCases(BaseModel):
     country_name = CharField()
     cases_total = IntegerField()
     deaths_total = IntegerField()
-    population = IntegerField(),
-    cases_total_1M_pop = FloatField(),
-    death_total_1M_pop = FloatField()
+    population = IntegerField()
+    # cases_total_1M_pop = FloatField(),
+    # death_total_1M_pop = FloatField()
     # cases_total_1M_pop = GENERATED ALWAYS AS (cases_total / (population / 1000000)) STORED,
     # death_total_1M_pop = GENERATED ALWAYS AS (deaths_total / (population / 1000000)) STORED
 
@@ -38,9 +38,9 @@ CovidCases(
     country_name="USA", 
     cases_total=104453003,
     deaths_total=1135957,
-    population=334805269,
-    cases_total_1M_pop = GENERATED ALWAYS AS (cases_total / (population / 1000000)) STORED,
-    death_total_1M_pop = GENERATED ALWAYS AS (deaths_total / (population / 1000000)) STORED
+    population=334805269
+    # cases_total_1M_pop = GENERATED ALWAYS AS (cases_total / (population / 1000000)) STORED,
+    # death_total_1M_pop = GENERATED ALWAYS AS (deaths_total / (population / 1000000)) STORED
     ).save()
 
 CovidCases(
