@@ -19,13 +19,16 @@ db.connect()
 
 # NOTE--END <<<BOILER PLATE FOR PEEWEE>>>
 
-# Create Covid Cases Table
+# Create CovidCases Table
 class CovidCases(BaseModel):
     country_name = CharField()
     cases_total = IntegerField()
     deaths_total = IntegerField()
-    population = IntegerField()
-    # cases_total_1M_pop = GENERATED ALWAYS AS (cases_total / (population / 1000000)) STORED
+    population = IntegerField(),
+    cases_total_1M_pop = FloatField(),
+    death_total_1M_pop = FloatField()
+    # cases_total_1M_pop = GENERATED ALWAYS AS (cases_total / (population / 1000000)) STORED,
+    # death_total_1M_pop = GENERATED ALWAYS AS (deaths_total / (population / 1000000)) STORED
 
 # Drop current data and re-seed
 db.drop_tables([CovidCases])
@@ -36,14 +39,77 @@ CovidCases(
     country_name="USA", 
     cases_total=104453003,
     deaths_total=1135957,
-    population=334805269
+    population=334805269,
+    cases_total_1M_pop = GENERATED ALWAYS AS (cases_total / (population / 1000000)) STORED,
+    death_total_1M_pop = GENERATED ALWAYS AS (deaths_total / (population / 1000000)) STORED
     ).save()
 
 CovidCases(
-    country_name="USA", 
+    country_name="India", 
     cases_total=44683250,
     deaths_total=530745,
     population=1406631776
+    ).save()
+
+
+CovidCases(
+    country_name="France", 
+    cases_total=39533323,
+    deaths_total=164286,
+    population=65584518
+    ).save()
+
+
+CovidCases(
+    country_name="Germany", 
+    cases_total=37822577,
+    deaths_total=166128,
+    population=83883596
+    ).save()
+
+
+CovidCases(
+    country_name="Brazil", 
+    cases_total=36886658,
+    deaths_total=697345,
+    population=215353593
+    ).save()
+
+
+CovidCases(
+    country_name="Japan", 
+    cases_total=32712246,
+    deaths_total=69289,
+    population=125584838
+    ).save()
+
+
+CovidCases(
+    country_name="South Korea", 
+    cases_total=30243393,
+    deaths_total=33574,
+    population=51329899
+    ).save()
+
+CovidCases(
+    country_name="Italy", 
+    cases_total=25488166,
+    deaths_total=187272,
+    population=60262770
+    ).save()
+
+CovidCases(
+    country_name="UK", 
+    cases_total=24274361,
+    deaths_total=204171,
+    population=68497907
+    ).save()
+
+CovidCases(
+    country_name="Russia", 
+    cases_total=21987334,
+    deaths_total=395234,
+    population=145805947
     ).save()
 
 
