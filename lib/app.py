@@ -5,9 +5,8 @@ from playhouse.shortcuts import model_to_dict, dict_to_model
 
 # NOTE--START<<<BOILER PLATE FOR PEEWEE>>>
 # Create database - specify db_name, user, password, host, and port
-db = PostgresqlDatabase('people', user='postgres', password='12345',
+db = PostgresqlDatabase('covid_cases', user='postgres', password='12345',
     host='localhost', port=12345)
-
 
 # Create base model to pull from database
 class BaseModel(Model):
@@ -51,14 +50,12 @@ CovidCases(
     population=1406631776
     ).save()
 
-
 CovidCases(
     country_name="France", 
     cases_total=39533323,
     deaths_total=164286,
     population=65584518
     ).save()
-
 
 CovidCases(
     country_name="Germany", 
@@ -67,7 +64,6 @@ CovidCases(
     population=83883596
     ).save()
 
-
 CovidCases(
     country_name="Brazil", 
     cases_total=36886658,
@@ -75,14 +71,12 @@ CovidCases(
     population=215353593
     ).save()
 
-
 CovidCases(
     country_name="Japan", 
     cases_total=32712246,
     deaths_total=69289,
     population=125584838
     ).save()
-
 
 CovidCases(
     country_name="South Korea", 
@@ -112,7 +106,6 @@ CovidCases(
     population=145805947
     ).save()
 
-
 # Creating a flask server
 app = Flask(__name__)
 
@@ -127,7 +120,7 @@ def endpoint(id=None):
         # Take model, translate into covid-cases and model it to a dictionary
         if id:
             return jsonify(model_to_dict(CovidCases.get(CovidCases.id == id)))
-        # Goes through person table and appends to list
+        # Goes through CovidCases table and appends to list
         else:
             covid_list = []
             for covid_cases in CovidCases.select():
@@ -153,7 +146,7 @@ def endpoint(id=None):
         CovidCases.delete().where(CovidCases.id == id).execute()
         return f"Covid Cases entry at id {str(id)} has been deleted."
 
-app.run(debug=True, port=54321)
+app.run(debug=True, port=9000)
 
 
 
