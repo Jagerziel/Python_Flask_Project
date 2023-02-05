@@ -1,20 +1,18 @@
 # Imports
-from flask import Flask, jsonify, request
-from peewee import *
-from playhouse.shortcuts import model_to_dict, dict_to_model
+from flask import Flask, jsonify, request # Similar to Express
+from peewee import * # Used to define models
+from playhouse.shortcuts import model_to_dict, dict_to_model # Similar to Mongoose
 
 # NOTE--START<<<BOILER PLATE FOR PEEWEE>>>
 # Create database - specify db_name, user, password, host, and port
-db = PostgresqlDatabase('covid_cases', user='postgres', password='12345',
-    host='localhost', port=12345)
+db = PostgresqlDatabase('covid_cases', user='jagerziel', password='12345',
+    host='localhost', port=5432)
 
 # Create base model to pull from database
 class BaseModel(Model):
     class Meta:
         database = db
 
-# Connect to DB
-db.connect()
 
 # NOTE--END <<<BOILER PLATE FOR PEEWEE>>>
 
@@ -28,6 +26,9 @@ class CovidCases(BaseModel):
     # death_total_1M_pop = FloatField()
     # cases_total_1M_pop = GENERATED ALWAYS AS (cases_total / (population / 1000000)) STORED,
     # death_total_1M_pop = GENERATED ALWAYS AS (deaths_total / (population / 1000000)) STORED
+
+# Connect to DB
+db.connect()
 
 # Drop current data and re-seed
 db.drop_tables([CovidCases])
@@ -110,6 +111,9 @@ CovidCases(
 app = Flask(__name__)
 
 # Define routes
+@app.route('/')
+def index():
+    return "This is the Root Directory"
 @app.route('/covid-cases/', methods=['GET', 'POST'])
 @app.route('/covid-cases/<id>', methods=['GET', 'PUT', 'DELETE'])
 
