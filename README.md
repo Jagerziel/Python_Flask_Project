@@ -32,6 +32,12 @@ To get started, navigate to the root path or insert one of the following paths i
 
 ## Technical Notes
 
+### How to Run Program
+In your terminal type:
+
+1) `pipenv shell` 
+2) `python3 lib/app.py`
+
 ### Data
 Output is configured as follows:
 ```
